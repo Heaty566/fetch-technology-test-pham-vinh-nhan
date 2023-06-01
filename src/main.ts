@@ -6,7 +6,7 @@ dotenv.config({
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { CustomLoggerService } from './core/logger';
-import { middleware } from './core/common/middlewares';
+import { middleware } from './core/common/middleware';
 import { config } from './core/common/config';
 import { monoLogger } from 'mono-utils-core';
 import { constant } from './core/common/constant';
