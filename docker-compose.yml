@@ -1,0 +1,13 @@
+version: '3'
+services:
+    database:
+        image: postgres
+        restart: on-failure
+        environment:
+          - POSTGRES_USER=postgres
+          - POSTGRES_PASSWORD=1234567890
+          - POSTGRES_DB=booking_appartment
+        volumes:
+          - ./docker-volume/postgres_data:/var/lib/postgresql/data
+        ports:
+          - 5432:5432
