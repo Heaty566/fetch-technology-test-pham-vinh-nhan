@@ -6,7 +6,7 @@ dotenv.config({
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { CustomLoggerService } from './core/logger';
-import { middlewares } from './core/common/middlewares';
+import { middleware } from './core/common/middlewares';
 import { config } from './core/common/config';
 import { monoLogger } from 'mono-utils-core';
 import { constant } from './core/common/constant';
@@ -15,7 +15,7 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule, {
         logger: new CustomLoggerService(),
     });
-    middlewares(app);
+    middleware(app);
     // log config
     monoLogger.log(
         constant.LOGGER.NS.APP_INFO,

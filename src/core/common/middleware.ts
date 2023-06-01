@@ -12,7 +12,7 @@ import { winstonLogger } from '../logger';
 import { StatusCodes } from 'http-status-codes';
 import { NODE_ENV } from '../interfaces';
 
-export function middlewares(app: INestApplication) {
+export function middleware(app: INestApplication) {
     // basic middlewares
     app.use(cookieParser());
     app.use(helmet());
