@@ -9,6 +9,7 @@ import { StatusCodes } from 'http-status-codes';
 import { User, UserRoleNameEnum } from './entities';
 import { UserRoleService } from './userRole.service';
 import { monoLogger } from 'mono-utils-core';
+import { LoginUserV1Dto } from './dto/loginUser.dto';
 
 @Injectable()
 export class AuthService {
@@ -75,8 +76,44 @@ export class AuthService {
 
         const newUser = await this._createUser(body);
 
+        // create access token
         const accessToken = await this.encryptAccessToken(
             newUser,
+            constant.APP.DEFAULT_TOKEN_AGING,
+        );
+
+        return {
+            accessToken,
+        };
+    }
+
+    async loginUserV1(body: LoginUserV1Dto) {
+        const user = await this.userRepository.findOne({
+            where: { email: body.email },
+        });
+
+        if (!user) {
+            throw new ServerHttpException(
+                'Email or password is not correct',
+                StatusCodes.BAD_REQUEST,
+            );
+        }
+
+        const isPasswordCorrect = await this.decryptPassword(
+            body.password,
+            user.password,
+        );
+
+        if (!isPasswordCorrect) {
+            throw new ServerHttpException(
+                'Email or password is not correct',
+                StatusCodes.BAD_REQUEST,
+            );
+        }
+
+        // create access token
+        const accessToken = await this.encryptAccessToken(
+            user,
             constant.APP.DEFAULT_TOKEN_AGING,
         );
 
