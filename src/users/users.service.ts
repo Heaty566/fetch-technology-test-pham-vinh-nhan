@@ -14,4 +14,8 @@ export class UsersService {
         private readonly authService: AuthService,
         private readonly userRoleService: UserRoleService,
     ) {}
+
+    async getUserById(id: string): Promise<User> {
+        return await this.userRepository.findOneById(id);
+    }
 }

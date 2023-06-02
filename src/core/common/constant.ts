@@ -8,6 +8,9 @@ export const constant = {
         },
         FILE_PATH: 'logs',
     },
+    CLIENT: {
+        HEADER_AUTH_KEY: 'authorization',
+    },
     APP: {
         ERROR_MESSAGE_KEY: 'errorMessage',
         PAGING: {

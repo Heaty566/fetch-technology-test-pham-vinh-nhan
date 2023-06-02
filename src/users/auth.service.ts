@@ -19,47 +19,15 @@ export class AuthService {
         private readonly userRoleService: UserRoleService,
     ) {}
 
-    private async encryptPassword(password: string): Promise<string> {
-        return await bcrypt.hash(password, constant.APP.DEFAULT_HASH_SALT);
-    }
-
-    private async decryptPassword(
-        inputPassword: string,
-        comparePassword: string,
-    ): Promise<boolean> {
-        return await bcrypt.compare(inputPassword, comparePassword);
-    }
-
-    private async encryptAccessToken(
-        tokenData: Record<any, any>,
-        maxAge: number,
-    ) {
+    async verifyToken<T>(tokenData: string): Promise<{ data: T; error: any }> {
         try {
-            const token = await this.jwtService.signAsync(
-                {
-                    userId: tokenData.id,
-                },
-                {
-                    expiresIn: maxAge,
-                },
-            );
-
-            return token;
+            return {
+                data: (await this.jwtService.verifyAsync<any>(tokenData)) as T,
+                error: null,
+            };
         } catch (err) {
-            monoLogger.log(constant.LOGGER.NS.APP_ERROR, err);
-            return null;
+            return { data: null, error: err };
         }
-    }
-
-    private async _createUser(body: RegisterUserV1Dto) {
-        const user = new User();
-        user.email = body.email;
-        user.name = body.name;
-        user.password = await this.encryptPassword(body.password);
-        user.role = await this.userRoleService.getUserRoleByName(
-            UserRoleNameEnum.CUSTOMER,
-        );
-        return await this.userRepository.save(user);
     }
 
     async registerUserV1(body: RegisterUserV1Dto) {
@@ -120,5 +88,48 @@ export class AuthService {
         return {
             accessToken,
         };
+    }
+
+    private async encryptPassword(password: string): Promise<string> {
+        return await bcrypt.hash(password, constant.APP.DEFAULT_HASH_SALT);
+    }
+
+    private async decryptPassword(
+        inputPassword: string,
+        comparePassword: string,
+    ): Promise<boolean> {
+        return await bcrypt.compare(inputPassword, comparePassword);
+    }
+
+    private async encryptAccessToken(
+        tokenData: Record<any, any>,
+        maxAge: number,
+    ) {
+        try {
+            const token = await this.jwtService.signAsync(
+                {
+                    userId: tokenData.id,
+                },
+                {
+                    expiresIn: maxAge,
+                },
+            );
+
+            return token;
+        } catch (err) {
+            monoLogger.log(constant.LOGGER.NS.APP_ERROR, err);
+            return null;
+        }
+    }
+
+    private async _createUser(body: RegisterUserV1Dto) {
+        const user = new User();
+        user.email = body.email;
+        user.name = body.name;
+        user.password = await this.encryptPassword(body.password);
+        user.role = await this.userRoleService.getUserRoleByName(
+            UserRoleNameEnum.CUSTOMER,
+        );
+        return await this.userRepository.save(user);
     }
 }

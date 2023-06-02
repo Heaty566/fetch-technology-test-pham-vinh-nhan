@@ -8,4 +8,11 @@ export class UserRepository extends RepositoryService<User> {
     constructor(dataSource: DataSource) {
         super(User, dataSource.createEntityManager());
     }
+
+    async findOneById(userId: string): Promise<User> {
+        return await this.createQueryBuilder('user')
+            .leftJoinAndSelect('user.role', 'role')
+            .where('user.id = :userId', { userId })
+            .getOne();
+    }
 }
