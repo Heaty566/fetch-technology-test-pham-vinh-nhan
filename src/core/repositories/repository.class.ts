@@ -2,7 +2,7 @@ import { Repository, SelectQueryBuilder } from 'typeorm';
 import { CompareOperator, PagingResult } from './repository.interface';
 import { monoLogger } from 'mono-utils-core';
 import { constant } from '../common/constant';
-import { PagingFilter } from '../dtos/paging';
+import { PagingFilter } from '../dtos/paging.dto';
 
 export class RepositoryService<T> extends Repository<T> {
     protected async paging(

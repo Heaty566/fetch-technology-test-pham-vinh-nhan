@@ -1,7 +1,7 @@
 import { HttpException, Injectable, PipeTransform } from '@nestjs/common';
 import { StatusCodes } from 'http-status-codes';
 import { ObjectSchema, ValidationError } from 'joi';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import { constant } from '../common/constant';
 import { ServerHttpException } from '../interfaces/class';
 

@@ -20,5 +20,6 @@ export const constant = {
         DEFAULT_DELETE_STATUS: 'DELETED',
         DEFAULT_STATUS_FIELD: 'status',
         DEFAULT_TOKEN_AGING: 60 * 60 * 24 * 30,
+        API_PREFIX: 'api',
     },
 };

@@ -21,6 +21,7 @@ export function middleware(app: INestApplication) {
     app.enableVersioning({
         type: VersioningType.URI,
     });
+    app.setGlobalPrefix(constant.APP.API_PREFIX);
     // swagger
     if (config.NODE_ENV === NODE_ENV.DEVELOPMENT) {
         const configSwagger = new DocumentBuilder()
