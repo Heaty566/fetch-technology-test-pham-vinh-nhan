@@ -7,7 +7,18 @@ export const roomValidationSchema: Record<keyof Room, joi.Schema> = {
     quantity: joi.number().integer().min(0).required(),
     type: joi.string().required(),
     price: joi.number().min(0).required(),
-    createdAt: joi.date().required(),
+    createdAt: joi
+        .date()
+        .iso()
+        .options({ convert: true })
+        .default('00:00:00')
+        .required(),
     status: joi.string().required(),
-    updatedAt: joi.date().required(),
+    updatedAt: joi
+        .date()
+        .iso()
+        .options({ convert: true })
+        .default('00:00:00')
+        .required(),
+    bookingItems: joi.array().items(joi.object()),
 };

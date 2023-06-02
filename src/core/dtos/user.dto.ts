@@ -5,8 +5,18 @@ import * as joi from 'joi';
 const joiPassword: JoiPasswordExtend = joi.extend(joiPasswordExtendCore);
 
 export const userValidationSchema: Record<keyof User, joi.Schema> = {
-    createdAt: joi.date().required(),
-    updatedAt: joi.date().required(),
+    createdAt: joi
+        .date()
+        .iso()
+        .options({ convert: true })
+        .default('00:00:00')
+        .required(),
+    updatedAt: joi
+        .date()
+        .iso()
+        .options({ convert: true })
+        .default('00:00:00')
+        .required(),
     id: joi.string().required(),
     email: joi.string().min(3).max(255).email().required(),
     password: joiPassword

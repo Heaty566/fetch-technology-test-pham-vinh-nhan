@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import * as joi from 'joi';
 import { roomValidationSchema } from 'src/core/dtos';
 
-export class EditRoomDto {
+export class EditRoomV1Dto {
     @ApiProperty({ description: 'Description of room', example: 'Nice room' })
     description: string;
 
@@ -16,7 +16,7 @@ export class EditRoomDto {
     type: string;
 }
 
-export const editRoomValidationSchema = joi.object<EditRoomDto>({
+export const editRoomValidationV1ValidationSchema = joi.object<EditRoomV1Dto>({
     description: roomValidationSchema.description,
     quantity: roomValidationSchema.quantity,
     price: roomValidationSchema.price,

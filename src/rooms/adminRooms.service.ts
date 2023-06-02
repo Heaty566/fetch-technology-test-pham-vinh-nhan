@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { RoomRepository } from 'src/core/repositories';
-import { CreateRoomDto } from './dto/createRoom.dto';
+import { CreateRoomV1Dto } from './dto/createRoom.dto';
 import { Room, RoomStatusEnum } from './entities';
 import { ServerHttpException } from 'src/core/interfaces/class';
 import { StatusCodes } from 'http-status-codes';
-import { EditRoomDto } from './dto/editRoom.dto';
-import { QueryFilterRoomForAdminDto } from './dto/filterAdminRoom.dto';
+import { EditRoomV1Dto } from './dto/editRoom.dto';
+import { QueryFilterRoomForAdminV1Dto } from './dto/adminFilterRoom.dto';
 
 @Injectable()
-export class RoomsAdminService {
+export class AdminRoomsService {
     constructor(private readonly roomRepository: RoomRepository) {}
 
     private async _getAndCheckRoomExisted(roomId: string) {
@@ -23,7 +23,7 @@ export class RoomsAdminService {
         return room;
     }
 
-    private async _createRoomObject(input: CreateRoomDto) {
+    private async _createRoomObject(input: CreateRoomV1Dto) {
         const room = new Room();
         room.description = input.description;
         room.price = input.price;
@@ -32,7 +32,7 @@ export class RoomsAdminService {
         return this.roomRepository.save(room);
     }
 
-    async createRoomV1(body: CreateRoomDto) {
+    async createRoomV1(body: CreateRoomV1Dto) {
         const existedRoom = await this.roomRepository.findRoomByType(body.type);
 
         if (existedRoom) {
@@ -58,7 +58,7 @@ export class RoomsAdminService {
         return await this.roomRepository.save(room);
     }
 
-    async editRoomByIdV1(roomId: string, body: EditRoomDto) {
+    async editRoomByIdV1(roomId: string, body: EditRoomV1Dto) {
         const room = await this._getAndCheckRoomExisted(roomId);
 
         //check if room type existed
@@ -78,7 +78,7 @@ export class RoomsAdminService {
         return await this.roomRepository.save(room);
     }
 
-    async findRoomsForAdminWithFilterV1(query: QueryFilterRoomForAdminDto) {
+    async findRoomsForAdminWithFilterV1(query: QueryFilterRoomForAdminV1Dto) {
         return this.roomRepository.findRoomsForAdminWithFilter(query);
     }
 }

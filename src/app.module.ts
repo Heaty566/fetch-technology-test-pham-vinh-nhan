@@ -6,7 +6,8 @@ import { config } from './core/common/config';
 import { UsersModule } from './users/users.module';
 import { User, UserRole } from './users/entities';
 import { RoomsModule } from './rooms/rooms.module';
-import { Room } from './rooms/entities';
+import { Room, RoomBooking } from './rooms/entities';
+import { RoomBookingItem } from './rooms/entities/roomBookingItem.entity';
 
 @Module({
     imports: [
@@ -18,9 +19,8 @@ import { Room } from './rooms/entities';
             password: config.DB_PASSWORD,
             database: config.DB_NAME,
             synchronize: true,
-
-            entities: [User, UserRole, Room],
-            migrations: [User, UserRole, Room],
+            entities: [User, UserRole, Room, RoomBooking, RoomBookingItem],
+            migrations: [User, UserRole, Room, RoomBooking, RoomBookingItem],
         }),
         UsersModule,
         RoomsModule,

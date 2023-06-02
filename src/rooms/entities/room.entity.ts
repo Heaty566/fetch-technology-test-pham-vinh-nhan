@@ -2,9 +2,11 @@ import {
     Column,
     CreateDateColumn,
     Entity,
+    OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
+import { RoomBookingItem } from './roomBookingItem.entity';
 
 export enum RoomStatusEnum {
     ACTIVE = 'ACTIVE',
@@ -36,4 +38,7 @@ export class Room {
 
     @UpdateDateColumn({})
     updatedAt: number;
+
+    @OneToMany(() => RoomBookingItem, (roomBookingItem) => roomBookingItem.room)
+    bookingItems: RoomBookingItem[];
 }

@@ -15,34 +15,39 @@ import { RoomsService } from './rooms.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard, RoleGuard } from '../core/guards';
 import {
-    CreateRoomDto,
-    createRoomValidationSchema,
+    CreateRoomV1Dto,
+    createRoomValidationV1ValidationSchema,
 } from './dto/createRoom.dto';
 import { JoiValidatorPipe, QueryJoiValidatorPipe } from 'src/core/pipes';
-import { RoomsAdminService } from './roomsAdmin.service';
+import { AdminRoomsService } from './adminRooms.service';
 import { UserRoleNameEnum } from 'src/users/entities';
 import { ValidatorUuidPipe } from 'src/core/pipes';
-import { EditRoomDto, editRoomValidationSchema } from './dto/editRoom.dto';
 import {
-    QueryFilterRoomForAdminDto,
-    queryFilterRoomForAdminValidationSchema,
-} from './dto/filterAdminRoom.dto';
+    EditRoomV1Dto,
+    editRoomValidationV1ValidationSchema,
+} from './dto/editRoom.dto';
+import {
+    QueryFilterRoomForAdminV1Dto,
+    queryFilterRoomForAdminV1ValidationSchema,
+} from './dto/adminFilterRoom.dto';
 
 @ApiTags('Admin Rooms')
 @Controller('/admin/rooms')
 @ApiBearerAuth()
 @UseGuards(AuthGuard)
-export class RoomsAdminController {
-    constructor(private readonly roomsAdminService: RoomsAdminService) {}
+export class AdminRoomsController {
+    constructor(private readonly roomsAdminService: AdminRoomsService) {}
 
     @Version('1')
     @RoleGuard([UserRoleNameEnum.ADMIN])
     @Get()
     async getPagingRoomsV1(
         @Query(
-            new QueryJoiValidatorPipe(queryFilterRoomForAdminValidationSchema),
+            new QueryJoiValidatorPipe(
+                queryFilterRoomForAdminV1ValidationSchema,
+            ),
         )
-        query: QueryFilterRoomForAdminDto,
+        query: QueryFilterRoomForAdminV1Dto,
     ) {
         return await this.roomsAdminService.findRoomsForAdminWithFilterV1(
             query,
@@ -53,8 +58,8 @@ export class RoomsAdminController {
     @RoleGuard([UserRoleNameEnum.ADMIN])
     @Post()
     async createRoomV1(
-        @Body(new JoiValidatorPipe(createRoomValidationSchema))
-        body: CreateRoomDto,
+        @Body(new JoiValidatorPipe(createRoomValidationV1ValidationSchema))
+        body: CreateRoomV1Dto,
     ) {
         return await this.roomsAdminService.createRoomV1(body);
     }
@@ -82,8 +87,8 @@ export class RoomsAdminController {
     @Put('/:roomId')
     async editRoomByIdV1(
         @Param('roomId', new ValidatorUuidPipe()) roomId: string,
-        @Body(new JoiValidatorPipe(editRoomValidationSchema))
-        body: EditRoomDto,
+        @Body(new JoiValidatorPipe(editRoomValidationV1ValidationSchema))
+        body: EditRoomV1Dto,
     ) {
         return await this.roomsAdminService.editRoomByIdV1(roomId, body);
     }

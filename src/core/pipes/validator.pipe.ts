@@ -4,10 +4,22 @@ import { ObjectSchema, ValidationError } from 'joi';
 import * as _ from 'lodash';
 import { constant } from '../common/constant';
 import { ServerHttpException } from '../interfaces/class';
+import * as moment from 'moment';
 
 @Injectable()
 export class JoiValidatorPipe implements PipeTransform {
     constructor(private readonly validateschema: ObjectSchema) {}
+
+    private _extraContext() {
+        const currentDate = new Date();
+        const tomorrow = moment(currentDate)
+            .add(1, 'days')
+            .format('YYYY-MM-DD');
+
+        return {
+            tomorrow,
+        };
+    }
 
     private _mapJoiError(error: ValidationError) {
         const errorObj = {};
@@ -34,6 +46,9 @@ export class JoiValidatorPipe implements PipeTransform {
         // validate input
         const { error, value } = this.validateschema.validate(input, {
             abortEarly: false,
+            context: {
+                ...this._extraContext(),
+            },
         });
 
         if (error) {
