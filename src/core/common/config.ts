@@ -6,7 +6,7 @@ export const config = {
     PORT: Number(process.env.PORT) || 4000,
     NODE_ENV: process.env.NODE_ENV || 'development',
     SWAGGER_PATH: process.env.SWAGGER_PATH || 'api/explorer',
-
+    JWT_SECRET_KEY: process.env.JWT_SECRET_KEY || '',
     // db config
     DB_HOST: process.env.DB_HOST || '',
     DB_PORT: Number(process.env.DB_PORT) || 5432,

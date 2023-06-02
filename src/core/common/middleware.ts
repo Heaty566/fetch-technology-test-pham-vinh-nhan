@@ -1,4 +1,4 @@
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, VersioningType } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as compression from 'compression';
 import * as cookieParser from 'cookie-parser';
@@ -18,7 +18,10 @@ export function middleware(app: INestApplication) {
     app.use(helmet());
     app.use(compression());
     app.enableCors({ origin: config.CLIENT_URL, credentials: true });
-
+    app.enableVersioning({
+        type: VersioningType.URI,
+    });
+    app.setGlobalPrefix(constant.APP.API_PREFIX);
     // swagger
     if (config.NODE_ENV === NODE_ENV.DEVELOPMENT) {
         const configSwagger = new DocumentBuilder()
