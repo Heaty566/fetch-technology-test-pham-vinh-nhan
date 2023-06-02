@@ -36,7 +36,10 @@ export class PagingFilter {
     isShowDeleted?: boolean = false;
 }
 
-export const pagingFilterSchema: Record<keyof PagingFilter, Joi.Schema> = {
+export const pagingFilterValidationSchema: Record<
+    keyof PagingFilter,
+    Joi.Schema
+> = {
     page: joi
         .number()
         .failover(constant.APP.PAGING.DEFAULT_PAGE)

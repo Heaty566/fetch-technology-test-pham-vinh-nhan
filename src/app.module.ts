@@ -5,6 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { config } from './core/common/config';
 import { UsersModule } from './users/users.module';
 import { User, UserRole } from './users/entities';
+import { RoomsModule } from './rooms/rooms.module';
+import { Room } from './rooms/entities';
 
 @Module({
     imports: [
@@ -17,10 +19,11 @@ import { User, UserRole } from './users/entities';
             database: config.DB_NAME,
             synchronize: true,
 
-            entities: [User, UserRole],
-            migrations: [User, UserRole],
+            entities: [User, UserRole, Room],
+            migrations: [User, UserRole, Room],
         }),
         UsersModule,
+        RoomsModule,
     ],
     controllers: [AppController],
     providers: [AppService],

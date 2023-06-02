@@ -15,4 +15,11 @@ export class UserRepository extends RepositoryService<User> {
             .where('user.id = :userId', { userId })
             .getOne();
     }
+
+    async findOneByEmail(email: string): Promise<User> {
+        return await this.createQueryBuilder('user')
+            .leftJoinAndSelect('user.role', 'role')
+            .where('user.email = :email', { email })
+            .getOne();
+    }
 }
