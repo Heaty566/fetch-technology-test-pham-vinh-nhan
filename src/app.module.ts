@@ -5,6 +5,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { config } from './core/common/config';
 import { UsersModule } from './users/users.module';
 import { User, UserRole } from './users/entities';
+import { RoomsModule } from './rooms/rooms.module';
+import { Room, RoomBooking } from './rooms/entities';
+import { RoomBookingItem } from './rooms/entities/roomBookingItem.entity';
 
 @Module({
     imports: [
@@ -16,11 +19,11 @@ import { User, UserRole } from './users/entities';
             password: config.DB_PASSWORD,
             database: config.DB_NAME,
             synchronize: true,
-
-            entities: [User, UserRole],
-            migrations: [User, UserRole],
+            entities: [User, UserRole, Room, RoomBooking, RoomBookingItem],
+            migrations: [User, UserRole, Room, RoomBooking, RoomBookingItem],
         }),
         UsersModule,
+        RoomsModule,
     ],
     controllers: [AppController],
     providers: [AppService],

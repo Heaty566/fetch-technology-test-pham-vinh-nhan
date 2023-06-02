@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { constant } from '../core/common/constant';
 import { JwtService } from '@nestjs/jwt';
@@ -10,9 +10,10 @@ import { User, UserRoleNameEnum } from './entities';
 import { UserRoleService } from './userRole.service';
 import { monoLogger } from 'mono-utils-core';
 import { LoginUserV1Dto } from './dto/loginUser.dto';
+import { config } from 'src/core/common/config';
 
 @Injectable()
-export class AuthService {
+export class AuthService implements OnModuleInit {
     constructor(
         private readonly jwtService: JwtService,
         private readonly userRepository: UserRepository,
@@ -131,5 +132,20 @@ export class AuthService {
             UserRoleNameEnum.CUSTOMER,
         );
         return await this.userRepository.save(user);
+    }
+
+    private async _createAdminUser() {
+        const user = new User();
+        user.email = config.ADMIN_EMAIL;
+        user.name = 'Admin';
+        user.password = await this.encryptPassword(config.ADMIN_PASSWORD);
+        user.role = await this.userRoleService.getUserRoleByName(
+            UserRoleNameEnum.ADMIN,
+        );
+        return await this.userRepository.save(user);
+    }
+
+    async onModuleInit() {
+        await this._createAdminUser();
     }
 }
