@@ -13,7 +13,8 @@ import { Room } from './entities';
 import { UsersModule } from 'src/users/users.module';
 import { RoomBookingService } from './roomBooking.service';
 import { RoomBookingController } from './roomBooking.controller';
-import { AdminRoomBookingController } from './adminRoomBooking.controller';
+import { UserRoomBookingController } from './userRoomBooking.controller';
+import { UserRoomBookingService } from './userRoomBooking.service';
 
 @Module({
     imports: [TypeOrmModule.forFeature([Room]), UsersModule],
@@ -21,12 +22,13 @@ import { AdminRoomBookingController } from './adminRoomBooking.controller';
         RoomsController,
         AdminRoomsController,
         RoomBookingController,
-        AdminRoomBookingController,
+        UserRoomBookingController,
     ],
     providers: [
         RoomsService,
         AdminRoomsService,
         RoomRepository,
+        UserRoomBookingService,
         RoomBookingRepository,
         RoomBookingService,
         RoomBookingItemRepository,

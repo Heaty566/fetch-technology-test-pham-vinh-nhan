@@ -7,6 +7,7 @@ export const roomValidationSchema: Record<keyof Room, joi.Schema> = {
     quantity: joi.number().integer().min(0).required(),
     type: joi.string().required(),
     price: joi.number().min(0).required(),
+    imageUrl: joi.string().required(),
     createdAt: joi
         .date()
         .iso()

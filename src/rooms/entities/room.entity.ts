@@ -24,6 +24,9 @@ export class Room {
     @Column({ default: 0 })
     quantity: number;
 
+    @Column({ default: '' })
+    imageUrl: string;
+
     @Column({ default: 0, type: 'numeric' })
     price: number;
 

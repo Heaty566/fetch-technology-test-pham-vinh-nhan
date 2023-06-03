@@ -29,6 +29,7 @@ export class AdminRoomsService {
         room.price = input.price;
         room.quantity = input.quantity;
         room.type = input.type;
+        room.imageUrl = input.imageUrl;
         return this.roomRepository.save(room);
     }
 
@@ -74,6 +75,7 @@ export class AdminRoomsService {
         room.price = body.price;
         room.quantity = body.quantity;
         room.type = body.type;
+        room.imageUrl = body.imageUrl;
 
         return await this.roomRepository.save(room);
     }

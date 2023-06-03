@@ -3,10 +3,12 @@ import {
     CreateDateColumn,
     Entity,
     ManyToOne,
+    OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
 import { UserRole } from './userRole.entity';
+import { RoomBooking } from 'src/rooms/entities';
 
 export enum UserStatus {
     ACTIVE = 'ACTIVE',
@@ -18,11 +20,14 @@ export class User {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column()
+    @Column({ default: '' })
     name: string;
 
-    @Column()
+    @Column({ default: '' })
     email: string;
+
+    @Column({ default: '' })
+    phone: string;
 
     @Column()
     password: string;
@@ -38,4 +43,7 @@ export class User {
 
     @ManyToOne(() => UserRole, (userRole) => userRole.users)
     role: UserRole;
+
+    @OneToMany(() => RoomBooking, (roomBooking) => roomBooking.user)
+    roomBookings: RoomBooking[];
 }

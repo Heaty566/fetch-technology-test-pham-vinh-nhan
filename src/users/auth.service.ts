@@ -127,6 +127,7 @@ export class AuthService implements OnModuleInit {
         const user = new User();
         user.email = body.email;
         user.name = body.name;
+        user.phone = body.phone;
         user.password = await this.encryptPassword(body.password);
         user.role = await this.userRoleService.getUserRoleByName(
             UserRoleNameEnum.CUSTOMER,

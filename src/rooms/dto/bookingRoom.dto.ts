@@ -47,9 +47,45 @@ export class BookingRoomV1Dto {
 }
 
 export const bookingRoomV1ValidationSchema = Joi.object<BookingRoomV1Dto>({
-    rooms: Joi.array().items(bookingRoomItemValidationSchema).required(),
+    rooms: Joi.array().min(1).items(bookingRoomItemValidationSchema).required(),
     name: Joi.string().required(),
     phone: Joi.string().required(),
+    startDate: Joi.date()
+        .iso()
+        .options({ convert: true })
+        .default('00:00:00')
+        .greater('now')
+        .required(),
+    endDate: Joi.date()
+        .iso()
+        .options({ convert: true })
+        .default('00:00:00')
+        .greater(Joi.ref('startDate'))
+        .required(),
+});
+
+export class BookingRoomMeV1Dto {
+    @ApiProperty({
+        description: 'List of room to book',
+        example: [],
+    })
+    rooms: BookingRoomItem[];
+
+    @ApiProperty({
+        description: 'Start date',
+        example: new Date(),
+    })
+    startDate: Date;
+
+    @ApiProperty({
+        description: 'End date',
+        example: new Date(),
+    })
+    endDate: Date;
+}
+
+export const bookingRoomMeV1ValidationSchema = Joi.object<BookingRoomMeV1Dto>({
+    rooms: Joi.array().min(1).items(bookingRoomItemValidationSchema).required(),
     startDate: Joi.date()
         .iso()
         .options({ convert: true })
