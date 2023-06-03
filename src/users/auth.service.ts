@@ -4,13 +4,13 @@ import { constant } from '../core/common/constant';
 import { JwtService } from '@nestjs/jwt';
 import { RegisterUserV1Dto } from './dto';
 import { UserRepository } from '../core/repositories';
-import { ServerHttpException } from 'src/core/interfaces/class';
+import { ServerHttpException } from '../core/interfaces/class';
 import { StatusCodes } from 'http-status-codes';
 import { User, UserRoleNameEnum } from './entities';
 import { UserRoleService } from './userRole.service';
 import { monoLogger } from 'mono-utils-core';
 import { LoginUserV1Dto } from './dto/loginUser.dto';
-import { config } from 'src/core/common/config';
+import { config } from '../core/common/config';
 
 @Injectable()
 export class AuthService implements OnModuleInit {

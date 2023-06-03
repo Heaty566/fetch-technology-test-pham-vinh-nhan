@@ -8,7 +8,7 @@ import {
     UpdateDateColumn,
 } from 'typeorm';
 import { UserRole } from './userRole.entity';
-import { RoomBooking } from 'src/rooms/entities';
+import { RoomBooking } from '../../rooms/entities';
 
 export enum UserStatus {
     ACTIVE = 'ACTIVE',

@@ -18,10 +18,10 @@ import {
     CreateRoomV1Dto,
     createRoomValidationV1ValidationSchema,
 } from './dto/createRoom.dto';
-import { JoiValidatorPipe, QueryJoiValidatorPipe } from 'src/core/pipes';
+import { JoiValidatorPipe, QueryJoiValidatorPipe } from '../core/pipes';
 import { AdminRoomsService } from './adminRooms.service';
-import { UserRoleNameEnum } from 'src/users/entities';
-import { ValidatorUuidPipe } from 'src/core/pipes';
+import { UserRoleNameEnum } from '../users/entities';
+import { ValidatorUuidPipe } from '../core/pipes';
 import {
     EditRoomV1Dto,
     editRoomValidationV1ValidationSchema,

@@ -13,7 +13,7 @@ import {
 import { RoomsService } from './rooms.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../core/guards';
-import { JoiValidatorPipe, ValidatorUuidPipe } from 'src/core/pipes';
+import { JoiValidatorPipe, ValidatorUuidPipe } from '../core/pipes';
 import { QueryAvailableRoomByDateV1Dto } from './dto/filterAvaibleRoom.dto';
 import { RoomBookingService } from './roomBooking.service';
 import {

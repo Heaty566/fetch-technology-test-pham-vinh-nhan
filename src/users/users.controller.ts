@@ -14,6 +14,6 @@ export class UsersController {
     @UseGuards(AuthGuard)
     @ApiBearerAuth()
     async getMeV1(@Req() req: Request) {
-        return this.usersService.getUserById(req.user.id);
+        return this.usersService.getUserById(req?.user?.id);
     }
 }

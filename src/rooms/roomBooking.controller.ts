@@ -9,7 +9,7 @@ import {
     Version,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { JoiValidatorPipe, ValidatorUuidPipe } from 'src/core/pipes';
+import { JoiValidatorPipe, ValidatorUuidPipe } from '../core/pipes';
 
 import {
     BookingRoomV1Dto,

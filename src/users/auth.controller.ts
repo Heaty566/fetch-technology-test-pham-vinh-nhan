@@ -3,13 +3,13 @@ import { ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { RegisterUserV1Dto, registerUserV1ValidationSchema } from './dto';
 import { AuthService } from './auth.service';
-import { JoiValidatorPipe } from 'src/core/pipes';
+import { JoiValidatorPipe } from '../core/pipes';
 import {
     LoginUserV1Dto,
     loginUserV1ValidationSchema,
 } from './dto/loginUser.dto';
 import { Response } from 'express';
-import { constant } from 'src/core/common/constant';
+import { constant } from '../core/common/constant';
 
 @ApiTags('Authentication')
 @Controller('auth')

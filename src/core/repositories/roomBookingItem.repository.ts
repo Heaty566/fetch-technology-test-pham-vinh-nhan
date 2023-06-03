@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { BookingStatusEnum, RoomBookingItem } from 'src/rooms/entities';
+import { BookingStatusEnum, RoomBookingItem } from '../../rooms/entities';
 import { DataSource } from 'typeorm';
 import { RepositoryService } from './repository.class';
 import { queryGenerator } from '../utils/query.utils';

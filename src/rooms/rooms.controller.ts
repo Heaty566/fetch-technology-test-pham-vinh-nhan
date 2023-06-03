@@ -2,7 +2,7 @@ import { Controller, Get, Param, UseGuards, Version } from '@nestjs/common';
 import { RoomsService } from './rooms.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../core/guards';
-import { ValidatorUuidPipe } from 'src/core/pipes';
+import { ValidatorUuidPipe } from '../core/pipes';
 
 @ApiTags('Rooms')
 @Controller('/rooms')

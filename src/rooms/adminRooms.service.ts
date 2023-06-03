@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { RoomRepository } from 'src/core/repositories';
 import { CreateRoomV1Dto } from './dto/createRoom.dto';
 import { Room, RoomStatusEnum } from './entities';
-import { ServerHttpException } from 'src/core/interfaces/class';
+import { ServerHttpException } from '../core/interfaces/class';
 import { StatusCodes } from 'http-status-codes';
 import { EditRoomV1Dto } from './dto/editRoom.dto';
 import { QueryFilterRoomForAdminV1Dto } from './dto/adminFilterRoom.dto';
