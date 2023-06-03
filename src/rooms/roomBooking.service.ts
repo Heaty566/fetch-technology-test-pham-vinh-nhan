@@ -16,7 +16,7 @@ import {
     QueryAvailableRoomByDateV1Dto,
     QueryAvailableRoomByRangeDateV1Dto,
 } from './dto';
-import { BookingRoomV1Dto } from './dto/bookingRoom.dto';
+import { BookingRoomItem, BookingRoomV1Dto } from './dto/bookingRoom.dto';
 
 @Injectable()
 export class RoomBookingService {
@@ -82,11 +82,16 @@ export class RoomBookingService {
         return remainBookedByRoom.filter((room) => room.quantity > 0);
     }
 
-    async isAvailableRoomByRangeDateV1(input: BookingRoomV1Dto) {
-        const { startDate, endDate } = input;
+    async isAvailableRoomByRangeDateV1(
+        startDate: Date,
+        endDate: Date,
+        bookingRoomItems: BookingRoomItem[],
+    ) {
+        startDate.setHours(0, 0, 0, 0);
+        endDate.setHours(0, 0, 0, 0);
 
         const bookedRooms = await Promise.all(
-            input.rooms.map(async (room) => {
+            bookingRoomItems.map(async (room) => {
                 const maxQuantity =
                     await this.roomBookingRepository.getMaxAvailableInDateRangeV1(
                         room.roomId,
@@ -98,11 +103,11 @@ export class RoomBookingService {
             }),
         );
 
-        const filteredRooms = input.rooms.filter(
+        const filteredRooms = bookingRoomItems.filter(
             (_, index) => bookedRooms[index],
         );
 
-        if (filteredRooms.length !== input.rooms.length) {
+        if (filteredRooms.length !== bookingRoomItems.length) {
             throw new ServerHttpException(
                 'Room is not available',
                 StatusCodes.BAD_REQUEST,
@@ -112,7 +117,7 @@ export class RoomBookingService {
         return bookedRooms;
     }
 
-    private async _createRoomBookingItem(roomId: string, quantity: number) {
+    async createRoomBookingItem(roomId: string, quantity: number) {
         const room = await this.roomRepository.findRoomById(roomId);
         const roomBookingItem = new RoomBookingItem();
         roomBookingItem.quantity = quantity;
@@ -140,7 +145,11 @@ export class RoomBookingService {
     }
 
     async roomBookingV1(input: BookingRoomV1Dto) {
-        await this.isAvailableRoomByRangeDateV1(input);
+        await this.isAvailableRoomByRangeDateV1(
+            input.startDate,
+            input.endDate,
+            input.rooms,
+        );
 
         const roomBooking = new RoomBooking();
         roomBooking.startDate = input.startDate;
@@ -149,7 +158,7 @@ export class RoomBookingService {
         roomBooking.phone = input.phone;
         roomBooking.bookingItems = await Promise.all(
             input.rooms.map(async (room) => {
-                const roomBookingItem = await this._createRoomBookingItem(
+                const roomBookingItem = await this.createRoomBookingItem(
                     room.roomId,
                     room.quantity,
                 );

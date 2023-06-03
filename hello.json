@@ -6,9 +6,11 @@
         },
         {
             "roomId": "c9396914-48c5-4c98-b40c-03db43da5530",
-            "quantity": 11
+            "quantity": 6
         }
     ],
-    "startDate": "2023-06-04T20:06:25.710Z",
-    "endDate": "2023-06-10T20:06:25.710Z"
+    "name": "string",
+    "phone": "string",
+    "startDate": "2023-06-24T20:06:25.710Z",
+    "endDate": "2023-06-27T20:06:25.710Z"
 }

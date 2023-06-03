@@ -22,6 +22,15 @@ export class RoomBookingRepository extends RepositoryService<RoomBooking> {
         super(RoomBooking, dataSource.createEntityManager());
     }
 
+    async findBookingRoomById(id: string) {
+        return this.createQueryBuilder('roomBooking')
+            .leftJoinAndSelect('roomBooking.bookingItems', 'bookingItems')
+            .leftJoinAndSelect('bookingItems.room', 'room')
+            .leftJoinAndSelect('roomBooking.user', 'user')
+            .where('roomBooking.id = :id', { id })
+            .getOne();
+    }
+
     async findBookingRoomByIdV1(id: string) {
         return this.createQueryBuilder('roomBooking')
             .leftJoinAndSelect('roomBooking.bookingItems', 'bookingItems')
@@ -64,6 +73,7 @@ export class RoomBookingRepository extends RepositoryService<RoomBooking> {
         return await this.createQueryBuilder(tableName)
             .leftJoinAndSelect(`${tableName}.bookingItems`, 'bookingItems')
             .leftJoinAndSelect('bookingItems.room', 'room')
+
             .where(queryString, filterValues)
             .andWhere('room.status = :status', {
                 status: BookingStatusEnum.ACTIVE,
@@ -104,6 +114,94 @@ export class RoomBookingRepository extends RepositoryService<RoomBooking> {
                     tableName: 'room',
                     compareKey: 'id',
                     operator: CompareOperator.EQUAL,
+                },
+            },
+        );
+
+        const bookingRoom = await this.createQueryBuilder(tableName)
+            .leftJoinAndSelect(`${tableName}.bookingItems`, 'bookingItems')
+            .leftJoinAndSelect('bookingItems.room', 'room')
+            .where(queryString, filterValues)
+            .andWhere('room.status = :status', {
+                status: BookingStatusEnum.ACTIVE,
+            })
+            .getMany();
+
+        let room: Room;
+
+        const rangeDate = this._generateArrayOfDate(startDate, endDate);
+        const value = rangeDate.map((item) => {
+            bookingRoom.map((roomItem) => {
+                roomItem.bookingItems.map((bookingItem) => {
+                    room = roomItem.bookingItems[0].room;
+                    if (
+                        item.value >= roomItem.startDate &&
+                        item.value <= roomItem.endDate
+                    ) {
+                        item.count += bookingItem.quantity;
+                    }
+                });
+            });
+
+            return item;
+        });
+
+        if (!room) {
+            room = await this.roomRepository.findOne({
+                where: {
+                    id: roomId,
+                },
+            });
+        }
+
+        const totalQuantity = _.get(room, 'quantity', 0);
+
+        const totalBooked = value.reduce((total, item) => {
+            return item.count > total ? item.count : total;
+        }, value[0].count);
+
+        return totalQuantity - totalBooked;
+    }
+    async getMaxAvailableInDateRangeExclueBookingRoomV1(
+        roomId: string,
+        bookingRoomId: string,
+        startDate: Date,
+        endDate: Date,
+    ) {
+        const { tableName } = this.metadata;
+        const { filterValues, queryString } = queryGenerator(
+            {
+                startDate,
+                endDate,
+                status: BookingStatusEnum.ACTIVE,
+                roomId,
+                bookingRoomId,
+            },
+            {
+                startDate: {
+                    tableName,
+                    compareKey: 'startDate',
+                    operator: CompareOperator.GREATER_THAN_OR_EQUAL,
+                },
+                endDate: {
+                    tableName,
+                    compareKey: 'endDate',
+                    operator: CompareOperator.LESS_THAN_OR_EQUAL,
+                },
+                status: {
+                    tableName,
+                    compareKey: 'status',
+                    operator: CompareOperator.EQUAL,
+                },
+                roomId: {
+                    tableName: 'room',
+                    compareKey: 'id',
+                    operator: CompareOperator.EQUAL,
+                },
+                bookingRoomId: {
+                    tableName: 'bookingItems',
+                    compareKey: 'id',
+                    operator: CompareOperator.NOT_EQUAL,
                 },
             },
         );

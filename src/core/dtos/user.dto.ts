@@ -31,4 +31,6 @@ export const userValidationSchema: Record<keyof User, joi.Schema> = {
     name: joi.string().min(3).max(255).required(),
     status: joi.string().required(),
     role: joi.string().required(),
+    roomBookings: joi.array().items(joi.string()).required(),
+    phone: joiPassword.string().noWhiteSpaces().min(10).max(10).required(),
 };

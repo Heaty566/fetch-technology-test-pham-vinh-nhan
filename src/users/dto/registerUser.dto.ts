@@ -11,10 +11,14 @@ export class RegisterUserV1Dto {
 
     @ApiProperty({ description: 'Full name', example: 'Nguyen Van A' })
     name: string;
+
+    @ApiProperty({ description: 'Phone number', example: '0123456789' })
+    phone: string;
 }
 
 export const registerUserV1ValidationSchema = joi.object<RegisterUserV1Dto>({
     email: userValidationSchema.email,
     password: userValidationSchema.password,
     name: userValidationSchema.name,
+    phone: userValidationSchema.phone,
 });

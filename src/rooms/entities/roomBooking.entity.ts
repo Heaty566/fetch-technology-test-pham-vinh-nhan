@@ -2,11 +2,13 @@ import {
     Column,
     CreateDateColumn,
     Entity,
+    ManyToOne,
     OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
 import { RoomBookingItem } from './roomBookingItem.entity';
+import { User } from '../../users/entities';
 
 export enum BookingStatusEnum {
     ACTIVE = 'ACTIVE',
@@ -48,4 +50,9 @@ export class RoomBooking {
         (roomBookingItem) => roomBookingItem.roomBooking,
     )
     bookingItems: RoomBookingItem[];
+
+    @ManyToOne(() => User, (user) => user.roomBookings, {
+        nullable: true,
+    })
+    user: User;
 }
